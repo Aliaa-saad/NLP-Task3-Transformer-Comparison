@@ -1,0 +1,7 @@
+transformers==4.48.3
+scikit-learn
+seaborn
+pandas
+numpy
+matplotlib
+tqdm
