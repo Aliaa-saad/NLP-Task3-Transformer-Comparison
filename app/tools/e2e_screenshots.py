@@ -157,6 +157,11 @@ def main() -> int:
                 expect(page.get_by_text("Δ Macro-F1 (B − A)")).to_be_visible(timeout=15_000)
                 check(page.get_by_role("table").count() >= 3, "metrics table + 2 confusion matrices")
                 check(page.get_by_text("Bootstrap").first.is_visible(), "bootstrap sentence visible")
+                fits = page.evaluate(
+                    "() => { const t = document.querySelector('table caption.sr-only')?.closest('div');"
+                    " return t ? t.scrollWidth <= t.clientWidth + 1 : false; }"
+                )
+                check(fits, "metrics table fits without horizontal scrolling")
                 shot(page, f"{vp_name}_compare_balanced")
                 page.get_by_role("radio", name="Natural").click()
                 page.wait_for_timeout(1000)

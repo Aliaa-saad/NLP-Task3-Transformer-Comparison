@@ -34,16 +34,16 @@ export function MetricsTable({ rows, nameA, nameB }: Props) {
   let lastGroup: string | undefined;
   return (
     <div className="-mx-1 overflow-x-auto px-1">
-      <table className="w-full min-w-[440px] border-separate border-spacing-y-1 text-sm">
+      <table className="w-full border-separate border-spacing-y-1 text-[13px] sm:text-sm">
         <caption className="sr-only">Model A vs Model B metrics. The better value in each row is highlighted.</caption>
         <thead>
           <tr className="text-left">
             <th scope="col" className="py-2 pr-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-ink-faint">Metric</th>
-            <th scope="col" className="px-3 py-2 text-right">
-              <span className="inline-flex items-center gap-1.5 font-semibold text-modelA"><ModelDot modelKey="model_a" />{nameA}</span>
+            <th scope="col" className="w-[30%] px-1 py-2 text-right sm:w-auto sm:px-3">
+              <span className="inline-flex items-center justify-end gap-1.5 font-semibold text-modelA"><ModelDot modelKey="model_a" />{nameA}</span>
             </th>
-            <th scope="col" className="px-3 py-2 text-right">
-              <span className="inline-flex items-center gap-1.5 font-semibold text-modelB"><ModelDot modelKey="model_b" />{nameB}</span>
+            <th scope="col" className="w-[30%] px-1 py-2 text-right sm:w-auto sm:px-3">
+              <span className="inline-flex items-center justify-end gap-1.5 font-semibold text-modelB"><ModelDot modelKey="model_b" />{nameB}</span>
             </th>
           </tr>
         </thead>
@@ -61,14 +61,14 @@ export function MetricsTable({ rows, nameA, nameB }: Props) {
                 </tr>
               ) : null,
               <tr key={r.label} className="group">
-                <th scope="row" className="rounded-l-lg py-2 pr-3 text-left font-normal text-ink-muted group-hover:text-ink">
+                <th scope="row" className="rounded-l-lg py-2 pr-2 text-left font-normal text-ink-muted group-hover:text-ink sm:pr-3">
                   {r.label}
-                  {r.note && <span className="ml-1 text-xs text-ink-faint">{r.note}</span>}
+                  {r.note && <span className="ml-1 hidden text-xs text-ink-faint sm:inline">{r.note}</span>}
                 </th>
                 {(["a", "b"] as const).map((k) => (
-                  <td key={k} className="px-1 py-1 text-right">
+                  <td key={k} className="py-1 pl-1 text-right sm:px-1">
                     <span
-                      className={`mono-num inline-block rounded-md px-2 py-1 ${w === k ? "font-semibold" : "text-ink-muted"}`}
+                      className={`mono-num inline-block whitespace-nowrap rounded-md px-1.5 py-1 sm:px-2 ${w === k ? "font-semibold" : "text-ink-muted"}`}
                       style={w === k ? bestStyle : undefined}
                     >
                       {r.format(r[k])}
