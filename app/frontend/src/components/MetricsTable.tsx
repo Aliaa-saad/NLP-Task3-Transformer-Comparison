@@ -1,0 +1,86 @@
+import type { ReactNode } from "react";
+import { ModelDot } from "./ui";
+
+export interface MetricRow {
+  label: string;
+  group?: string;
+  a: number | null | undefined;
+  b: number | null | undefined;
+  format: (v: number | null | undefined) => string;
+  /** Which direction is better; "none" disables highlighting. */
+  better?: "higher" | "lower" | "none";
+  note?: ReactNode;
+}
+
+interface Props {
+  rows: MetricRow[];
+  nameA: string;
+  nameB: string;
+}
+
+function winner(r: MetricRow): "a" | "b" | null {
+  if (r.better === "none" || r.a == null || r.b == null || r.a === r.b) return null;
+  const higher = (r.better ?? "higher") === "higher";
+  return (r.a > r.b) === higher ? "a" : "b";
+}
+
+const bestStyle = {
+  color: "var(--text)",
+  background: "color-mix(in srgb, var(--accent) 18%, transparent)",
+  boxShadow: "inset 0 0 0 1px color-mix(in srgb, var(--accent) 50%, transparent)",
+};
+
+export function MetricsTable({ rows, nameA, nameB }: Props) {
+  let lastGroup: string | undefined;
+  return (
+    <div className="-mx-1 overflow-x-auto px-1">
+      <table className="w-full min-w-[440px] border-separate border-spacing-y-1 text-sm">
+        <caption className="sr-only">Model A vs Model B metrics. The better value in each row is highlighted.</caption>
+        <thead>
+          <tr className="text-left">
+            <th scope="col" className="py-2 pr-3 font-mono text-[11px] font-medium uppercase tracking-[0.15em] text-ink-faint">Metric</th>
+            <th scope="col" className="px-3 py-2 text-right">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-modelA"><ModelDot modelKey="model_a" />{nameA}</span>
+            </th>
+            <th scope="col" className="px-3 py-2 text-right">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-modelB"><ModelDot modelKey="model_b" />{nameB}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => {
+            const w = winner(r);
+            const groupHeader = r.group && r.group !== lastGroup;
+            lastGroup = r.group;
+            return [
+              groupHeader ? (
+                <tr key={`g-${r.group}`}>
+                  <th colSpan={3} scope="colgroup" className="pb-1 pt-4 text-left font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-accent">
+                    {r.group}
+                  </th>
+                </tr>
+              ) : null,
+              <tr key={r.label} className="group">
+                <th scope="row" className="rounded-l-lg py-2 pr-3 text-left font-normal text-ink-muted group-hover:text-ink">
+                  {r.label}
+                  {r.note && <span className="ml-1 text-xs text-ink-faint">{r.note}</span>}
+                </th>
+                {(["a", "b"] as const).map((k) => (
+                  <td key={k} className="px-1 py-1 text-right">
+                    <span
+                      className={`mono-num inline-block rounded-md px-2 py-1 ${w === k ? "font-semibold" : "text-ink-muted"}`}
+                      style={w === k ? bestStyle : undefined}
+                    >
+                      {r.format(r[k])}
+                      {w === k && <span className="sr-only"> (better)</span>}
+                    </span>
+                  </td>
+                ))}
+              </tr>,
+            ];
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}

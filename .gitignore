@@ -30,3 +30,14 @@ pytorch_model.bin
 # OS files
 .DS_Store
 Thumbs.db
+
+# Web app (app/)
+app/backend/artifacts/**
+!app/backend/artifacts/README.md
+app/backend/.venv/
+app/backend/.env
+app/backend/.pytest_tmp/
+app/frontend/node_modules/
+app/frontend/dist/
+app/frontend/.env.local
+app/screenshots/*.tmp.png
