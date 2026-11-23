@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+
+# Credentials / private data
+kaggle.json
+.kaggle/
+*token*
+*.key
+*.pem
+
+# Local model artifacts and large datasets
+artifacts/model_a/*
+!artifacts/model_a/README.md
+!artifacts/model_a/tokenizer/README.md
+artifacts/model_b/*
+!artifacts/model_b/README.md
+artifacts/comparison/*
+!artifacts/comparison/README.md
+*.pt
+*.pth
+*.safetensors
+pytorch_model.bin
+*.onnx
+inference_config.json
+*.bin
+*.npy
+*.csv.gz
+yelp_academic_dataset_review.json
+NLP_Task3_Final_Artifacts.zip
+
+# Local Streamlit cache
+.streamlit/secrets.toml

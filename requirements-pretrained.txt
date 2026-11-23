@@ -1,0 +1,11 @@
+# Colab notebook dependencies (Colab supplies its own CUDA-enabled PyTorch build)
+transformers==4.48.3
+accelerate==1.2.1
+kagglehub>=0.3.6
+orjson
+scikit-learn
+matplotlib
+seaborn
+tqdm
+safetensors
+psutil
